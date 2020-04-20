@@ -23,6 +23,17 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "extra": {
+      "firebaseConfig": {
+        "apiKey": "AIzaSyCQHFgo0RwwJMQY40yVCfixACpg94CNbQ8",
+        "authDomain": "reaktive-starter.firebaseapp.com",
+        "databaseURL": "https://reaktive-starter.firebaseio.com",
+        "projectId": "reaktive-starter",
+        "storageBucket": "reaktive-starter.appspot.com",
+        "messagingSenderId": "46299516163",
+        "appId": "1:46299516163:web:be2e30a1d6d8e7da312d36"
+      }
     }
   }
 }

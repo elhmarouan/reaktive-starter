@@ -3,13 +3,14 @@ import { StyleSheet, View } from 'react-native';
 import { Text, Button } from 'galio-framework';
 
 export class HomeScreen extends React.Component {
+
   render() {
     return (
       <View style={styles.container}>
         <Text h1>Welcome</Text>
         <View style={styles.signInBlock}>
-            <Button round onPress={() => this.props.navigation.navigate('SignIn')}>Sign In</Button>
-            <Text style={styles.createAccountText} h5 onPress={() => this.props.navigation.navigate('SignUp')}>Create your account</Text>
+            <Button round onPress={() => this.props.navigation.navigate('SignInRT')}>Sign In</Button>
+            <Text style={styles.createAccountText} h5 onPress={() => this.props.navigation.navigate('SignUpRT')}>Create your account</Text>
         </View>
       </View>
     );
