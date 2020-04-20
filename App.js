@@ -1,14 +1,11 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import MyStack from './routes.js';
+import AuthNavigator from './src/navigation/AuthNavigator';
 
 export default class App extends React.Component {
 
   render() {
     return (
-      <NavigationContainer>
-        <MyStack />
-      </NavigationContainer>
+      <AuthNavigator />
     );
   }
 }

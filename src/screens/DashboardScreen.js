@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, Button } from 'galio-framework';
-import firebase from '../utils/firebase.js';
+import firebase from '../utils/firebase';
 
 export class DashboardScreen extends React.Component {
 

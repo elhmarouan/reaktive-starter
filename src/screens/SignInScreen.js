@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, Alert } from 'react-native';
 import { Input, Button, Text } from 'galio-framework';
-import firebase from '../utils/firebase.js';
-import { emailValidator, passwordValidator } from '../utils/validators.js';
+import firebase from '../utils/firebase';
+import { emailValidator, passwordValidator } from '../utils/validators';
 
 export class SignInScreen extends React.Component {
 
