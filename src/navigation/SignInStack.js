@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { DashboardScreen } from '../screens/DashboardScreen';
+import { DashboardIndex } from '../screens/Dashboard/DashboardIndex';
 
 const Stack = createStackNavigator();
 
-export default function SignOutStack() {
+export default function SignInStack() {
   return (
     <NavigationContainer>
-      <Stack.Navigator headerMode="none" initialRouteName="DashboardRT">
-        <Stack.Screen name="DashboardRT" component={DashboardScreen} />
+      <Stack.Navigator headerMode="none" initialRouteName="DashboardIndexRT">
+        <Stack.Screen name="DashboardIndexRT" component={DashboardIndex} />
       </Stack.Navigator>
     </NavigationContainer>
   )

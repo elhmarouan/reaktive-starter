@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text, Button } from 'galio-framework';
-import firebase from '../utils/firebase';
+import { Text } from 'galio-framework';
+import firebase from '../../utils/firebase';
 import * as Location from 'expo-location';
 
-export class DashboardScreen extends React.Component {
+export class DashboardHomeTab extends React.Component {
 
   state = {
     address: {},
@@ -47,10 +47,6 @@ export class DashboardScreen extends React.Component {
     })();
   };
 
-  onSignoutPressed = () => {
-    firebase.auth().signOut();
-  }
-
   render() {
     return (
       <View style={styles.container}>
@@ -61,7 +57,6 @@ export class DashboardScreen extends React.Component {
             <Text style={{paddingTop: 20}}>Your location is: {JSON.stringify(this.state.address)}</Text>
           </View>
         )}
-        <Button style={styles.signOutButton} color="error" round onPress={() => this.onSignoutPressed()}>Sign Out</Button>
       </View>
     );
   }
@@ -73,9 +68,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  signOutButton: {
-    position: 'absolute',
-    bottom: 15
   }
 });

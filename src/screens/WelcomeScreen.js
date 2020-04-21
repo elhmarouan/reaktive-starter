@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, Button } from 'galio-framework';
 
-export class HomeScreen extends React.Component {
+export class WelcomeScreen extends React.Component {
 
   render() {
     return (
