@@ -1,62 +1,51 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text } from 'galio-framework';
-import firebase from '../../utils/firebase';
-import * as Location from 'expo-location';
+import { StyleSheet, View, FlatList, Text, RefreshControl } from 'react-native';
+import { PostComponent } from '../../components/PostComponent';
+import Fire from '../../utils/firestore';
+
+const firebase = require("firebase");
+require("firebase/firestore");
 
 export class DashboardHomeTab extends React.Component {
 
   state = {
-    address: {},
-    currentUser: {
-      email: '',
-      displayName: ''
-    }
+    refreshing: false,
+    posts: []
   }
 
-  componentDidMount(){
-    const {email , displayName} = firebase.auth().currentUser;
-    this.setState({
-      currentUser: {email, displayName}
-    });
-    this._getLocation()
+  componentDidMount() {
+    this._loadPosts();
   }
 
-  _attemptReverseGeocodeAsync = async (location) => {
-    try {
-      const coords = {latitude:location.coords.latitude, longitude:location.coords.longitude};
-      let result = await Location.reverseGeocodeAsync(coords);
-      console.log(JSON.stringify(result));
-      let address = `${result[0].name} ${result[0].street}, ${result[0].postalCode} ${result[0].city}, ${result[0].region}, ${result[0].country}`;
-      this.setState({
-        address
-      });
-    } catch (e) {
-      return e;
-    }
-  };
-
-  _getLocation = () => {
-    (async () => {
-      let { status } = await Location.requestPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('PERMISSION NOT GRANTED');
-      }
-      let location = await Location.getCurrentPositionAsync({});
-      this._attemptReverseGeocodeAsync(location);
-    })();
-  };
+  _loadPosts = () => {
+    this.setState({refreshing: true});
+    Fire.getPosts()
+    .then(response => {
+      this.setState({posts: Array.from(response)});
+      this.setState({refreshing: false});
+    })
+  }
 
   render() {
     return (
       <View style={styles.container}>
-        { !!this.state.currentUser.email && (
-          <View style={{width: '98%'}}>
-            <Text h4>Welcome {this.state.currentUser.displayName}</Text>
-            <Text style={{paddingTop: 20}}>Your email address is: {this.state.currentUser.email}</Text>
-            <Text style={{paddingTop: 20}}>Your location is: {JSON.stringify(this.state.address)}</Text>
-          </View>
-        )}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Feed</Text>
+        </View>
+        <FlatList
+          style={styles.feed}
+          data={ this.state.posts }
+          renderItem={({item}) =>
+              <PostComponent 
+                  post={item}
+              /> 
+          }
+          keyExtractor= {item => item.id}
+          showsVerticalScrollIndicator= {false} 
+          refreshControl={
+            <RefreshControl refreshing={this.state.refreshing} onRefresh={this._loadPosts} />
+          }
+        />        
       </View>
     );
   }
@@ -65,8 +54,27 @@ export class DashboardHomeTab extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#EFECF4'
+  },
+  header: {
+    paddingTop: 64,
+    paddingBottom: 16,
+    backgroundColor: "#FFF",
+    alignItems: "center",
+    justifyContent: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: "#EBECF4",
+    shadowColor: "#454D65",
+    shadowOffset: {height: 5},
+    shadowRadius: 15,
+    shadowOpacity: 0.2,
+    zIndex: 10
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: "500",
+  },
+  feed: {
+    marginHorizontal: 16
   }
 });

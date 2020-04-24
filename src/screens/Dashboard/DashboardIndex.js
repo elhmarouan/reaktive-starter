@@ -3,7 +3,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { DashboardHomeTab } from './DashboardHomeTab';
 import { DashboardProfileTab } from './DashboardProfileTab';
-import { DashboardPublishTab } from './DashboardPublishTab';
+import { DashboardPostTab } from './DashboardPostTab';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -26,12 +26,12 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="DashboardPublishRT"
-        component={DashboardPublishTab}
+        name="DashboardPostRT"
+        component={DashboardPostTab}
         options={{
-          tabBarLabel: 'Publish',
+          tabBarLabel: 'Post',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="comment-plus" color={color} size={26} />
+            <MaterialCommunityIcons name="plus-circle" color={color} size={26} />
           ),
         }}
       />
