@@ -2,8 +2,27 @@ import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import moment from 'moment';
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 
 export class PostComponent extends React.Component {
+
+    _menu = null;
+
+    setMenuRef = ref => {
+      this._menu = ref;
+    };
+  
+    hideMenu = () => {
+      this._menu.hide();
+    };
+  
+    showMenu = () => {
+      this._menu.show();
+    };
+
+    deletePost = () => {
+        alert("Deleting post with id" + this.props.post.id);
+    } 
 
     constructor(props) {
         super(props);
@@ -20,7 +39,18 @@ export class PostComponent extends React.Component {
                             <Text style={styles.timestamp}>{moment(this.props.post.timestamp).fromNow()}</Text>
                         </View>
 
-                        <MaterialCommunityIcons name="dots-horizontal" color="#73788B" size={24} />
+                        <Menu
+                            ref={this.setMenuRef}
+                            button={
+                            <MaterialCommunityIcons 
+                                onPress={this.showMenu} 
+                                name="dots-horizontal" 
+                                color="#73788B" 
+                                size={24} />
+                            }
+                            >
+                            <MenuItem onPress={this.deletePost}>Delete</MenuItem>
+                        </Menu>
                     </View>
 
                     <Text style={styles.post}>{this.props.post.text}</Text>
