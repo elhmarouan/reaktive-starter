@@ -39,11 +39,16 @@ export class PostComponent extends React.Component {
     render() {
         return (
             <View style={styles.feedItem}>
-                <Image source={require("../assets/images/anonymous-avatar-icon.jpg")} style={styles.avatar} />
+                <Image
+                    style={styles.avatar}
+                    source={!!this.props.post.user.avatar
+                        ? {uri: this.props.post.user.avatar}                      
+                        : require("../assets/images/anonymous-avatar-icon.jpg")}
+                />                
                 <View style={{flex: 1}}>
                     <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
                         <View>
-                            <Text style={styles.name}>{this.props.post.username}</Text>
+                            <Text style={styles.name}>{this.props.post.user.name}</Text>
                             <Text style={styles.timestamp}>{moment(this.props.post.timestamp).fromNow()}</Text>
                         </View>
 

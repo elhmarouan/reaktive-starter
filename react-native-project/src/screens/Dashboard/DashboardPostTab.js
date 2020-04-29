@@ -10,12 +10,12 @@ export class DashboardPostTab extends React.Component {
   state = {
     text: "",
     image: null,
-    userId: null
+    avatar: null
   }
 
+
   componentDidMount() {
-    UserPermissions.getCameraPermission();
-    this.setState({userId: Fire.uid});
+    this.setState({avatar: Fire.userPhotoUrl});
   }
 
   handlePost = () => {
@@ -27,8 +27,21 @@ export class DashboardPostTab extends React.Component {
   }
 
   pickImage = async () => {
+    UserPermissions.getCameraRollPermission();
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3]
+    })
+
+    if (!result.cancelled) {
+      this.setState({image: result.uri});
+    }
+  }
+
+  takeImage = async () => {
+    UserPermissions.getCameraPermission();
+    let result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [4, 3]
     })
@@ -50,8 +63,12 @@ export class DashboardPostTab extends React.Component {
           </TouchableOpacity>
         </View>
         <View style={styles.inputContainer}>
-          {/* <Image source={{uri: this.state.user.avatar}} style={styles.avatar}></Image> */}
-          <Image source={require("../../assets/images/anonymous-avatar-icon.jpg")} style={styles.avatar}></Image>
+          <Image
+                    style={styles.avatar}
+                    source={!!this.state.avatar
+                        ? {uri: this.state.avatar}                      
+                        : require("../../assets/images/anonymous-avatar-icon.jpg")}
+          />   
           <TextInput 
             autoFocus={true}
             multiline={true}
@@ -62,9 +79,14 @@ export class DashboardPostTab extends React.Component {
             value={this.state.text}>
           </TextInput>
         </View>
-        <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
-          <MaterialCommunityIcons name="camera" color="#D8D9DB" size={32} />
-        </TouchableOpacity>
+        <View style={styles.addPhotoContainer}>
+          <TouchableOpacity onPress={this.pickImage} style={{marginLeft: 10}}>
+            <MaterialCommunityIcons name="image-plus" color="#D8D9DB" size={32} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.takeImage}>
+            <MaterialCommunityIcons name="camera" color="#D8D9DB" size={32} />
+          </TouchableOpacity>
+        </View>
         <View style={styles.imageContainer}>
           <Image source={{uri: this.state.image}} style={styles.image}></Image>
         </View>
@@ -95,7 +117,8 @@ const styles = StyleSheet.create({
       borderRadius: 24,
       marginRight: 16
     },
-    photo: {
+    addPhotoContainer: {
+      flexDirection: "row-reverse",
       alignItems: "flex-end",
       marginHorizontal: 32
     },

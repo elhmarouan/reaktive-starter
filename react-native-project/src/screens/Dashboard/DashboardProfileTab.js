@@ -22,7 +22,7 @@ export class DashboardProfileTab extends React.Component {
 
   componentDidMount(){
     this.loadCurrentUser();
-    this._getLocation();
+    // this._getLocation();
   }
 
   componentWillUnmount() {

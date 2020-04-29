@@ -3,7 +3,6 @@ import firebase from './firebase';
 class Fire {
 
     deletePost = async (postId) => {
-
         return new Promise(async (res, rej) => {
             this.firestore.collection("posts").doc(postId).delete()
             .then(ref => {
@@ -16,23 +15,21 @@ class Fire {
     }
 
     getPosts = async () => {
-        let ref = this.firestore.collection("posts");
+        let ref = this.firestore.collection("posts").orderBy("timestamp", "desc");
         try {
             const querySnapshot = await ref.get();
-            const data = [];
-            
-            querySnapshot.forEach(function(doc) {
-                if (doc.exists) {
-                    const post = doc.data() || {};
-                    post.user.get().then(user => {
-                        post.id = doc.id;
-                        post.user = user.data();
-                        data.push(post);
-                    })
-                }
-            });
 
-            return data;
+            return Promise.all(
+                querySnapshot.docs.map(async doc => {
+                    if (doc.exists) {
+                        const post = doc.data() || {};
+                        const user = await post.user.get();
+                        post.user = user.data();
+                        post.id = doc.id;
+                        return post;
+                    }  
+                })
+            );
         } catch ({ message }) {
             alert(message);
         }
@@ -107,25 +104,22 @@ class Fire {
     }
 
     updateUser = async user => {
-        let remoteUri = null;
-
         try {
             let db = this.firestore.collection("users").doc(this.uid);
+            let remoteUri = null;
+
+            if (user.avatar) {
+                remoteUri = await this.uploadPhotoAsync(user.avatar, `avatars/${this.uid}`);
+                firebase.auth().currentUser.updateProfile({
+                    photoURL: user.avatar
+                })
+            }
 
             db.set({
                 name: user.name,
                 email: user.email,
-                avatar: null
+                avatar: remoteUri
             })
-
-            if (user.avatar) {
-                remoteUri = await this.uploadPhotoAsync(user.avatar, `avatars/${this.uid}`);
-                db.set({
-                    avatar: remoteUri
-                },{
-                    merge: true
-                });
-            }
         } catch (error) {
             alert("Error :" + error);
         }
@@ -141,6 +135,10 @@ class Fire {
 
     get firestore() {
         return firebase.firestore();
+    }
+
+    get userPhotoUrl() {
+        return (firebase.auth().currentUser || {}).photoURL;
     }
 }
 
