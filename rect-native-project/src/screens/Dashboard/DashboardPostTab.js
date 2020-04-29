@@ -1,23 +1,21 @@
 import React from 'react';
 import { StyleSheet, SafeAreaView, View, Image, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Constants from 'expo-constants';
-import * as Permissions from 'expo-permissions';
-import Fire from '../../utils/firestore';
+import UserPermissions from '../../utils/UserPermissions';
+import Fire from '../../utils/Fire';
 import * as ImagePicker from 'expo-image-picker';
-
-const firebase = require("firebase");
-require("firebase/firestore");
 
 export class DashboardPostTab extends React.Component {
 
   state = {
     text: "",
-    image: null
+    image: null,
+    userId: null
   }
 
   componentDidMount() {
-    this.getPhotoPermission();
+    UserPermissions.getCameraPermission();
+    this.setState({userId: Fire.uid});
   }
 
   handlePost = () => {
@@ -40,14 +38,6 @@ export class DashboardPostTab extends React.Component {
     }
   }
 
-  getPhotoPermission = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
-    if (status !== 'granted') {
-      console.log('PHOTO PERMISSION NOT GRANTED');
-    }
-  }
-
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -60,6 +50,7 @@ export class DashboardPostTab extends React.Component {
           </TouchableOpacity>
         </View>
         <View style={styles.inputContainer}>
+          {/* <Image source={{uri: this.state.user.avatar}} style={styles.avatar}></Image> */}
           <Image source={require("../../assets/images/anonymous-avatar-icon.jpg")} style={styles.avatar}></Image>
           <TextInput 
             autoFocus={true}

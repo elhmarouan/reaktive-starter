@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Alert } from 'react-native';
 import { Input, Button, Text } from 'galio-framework';
-import firebase from '../utils/firebase';
+import Fire from '../utils/Fire';
 import { emailValidator, passwordValidator, passwordsMatchValidator, nameValidator } from '../utils/validators';
 
 export class SignUpScreen extends React.Component {
@@ -54,17 +54,11 @@ export class SignUpScreen extends React.Component {
       return;
     }
 
-    firebase.auth().createUserWithEmailAndPassword(this.state.email.value, this.state.password.value)
-      .then(userCredentials => { 
-        if(userCredentials.user){
-          userCredentials.user.updateProfile({
-            displayName: this.state.name.value
-          }).then(()=> {
-          })
-        }
-      }, (error) => {
-        Alert.alert(error.message); 
-      });;
+    Fire.createUser({
+      email: this.state.email.value,
+      password: this.state.password.value,
+      name: this.state.name.value
+    });
   }
 
     render() {

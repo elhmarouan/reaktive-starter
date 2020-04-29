@@ -10,5 +10,6 @@ https://reactnavigation.org/docs/stack-navigator/
 https://docs.expo.io/versions/latest/guides/using-firebase/
 https://medium.com/@denisceric94/expo-and-firebase-authentication-email-password-facebook-and-google-681a511c61b6
 https://www.youtube.com/watch?v=TkuQAjnaSbM
+https://www.youtube.com/watch?v=UNFDILca9M8&t=745s
 https://github.com/firebase/firebase-js-sdk/issues/2700
 https://dev.materialdesignicons.com/icons

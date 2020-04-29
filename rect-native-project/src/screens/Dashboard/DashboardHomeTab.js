@@ -1,10 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, Text, RefreshControl } from 'react-native';
 import { PostComponent } from '../../components/PostComponent';
-import Fire from '../../utils/firestore';
-
-const firebase = require("firebase");
-require("firebase/firestore");
+import Fire from '../../utils/Fire';
 
 export class DashboardHomeTab extends React.Component {
 
@@ -38,6 +35,7 @@ export class DashboardHomeTab extends React.Component {
           renderItem={({item}) =>
               <PostComponent 
                   post={item}
+                  reloadPosts={this._loadPosts}
               /> 
           }
           keyExtractor= {item => item.id}

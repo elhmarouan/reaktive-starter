@@ -3,6 +3,10 @@ import { StyleSheet, View, Text, Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import moment from 'moment';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
+import Fire from '../utils/Fire';
+
+const firebase = require("firebase");
+require("firebase/firestore");
 
 export class PostComponent extends React.Component {
 
@@ -21,7 +25,11 @@ export class PostComponent extends React.Component {
     };
 
     deletePost = () => {
-        alert("Deleting post with id" + this.props.post.id);
+        Fire.deletePost(this.props.post.id)
+        .then(ref => {
+          alert('Deleted !');
+          this.props.reloadPosts();
+        })
     } 
 
     constructor(props) {
